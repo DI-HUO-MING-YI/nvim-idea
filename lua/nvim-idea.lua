@@ -1,10 +1,11 @@
 local M = {}
 
 function M.ToggleFoldImportsWithLSP()
+    vim.notify("Toggled import folds")
     local current_pos = vim.api.nvim_win_get_cursor(0)
     local params = { textDocument = vim.lsp.util.make_text_document_params() }
 
-    vim.lsp.buf_request(0, 'textDocument/documentSymbol', params, function(err, result, ctx, _)
+    vim.lsp.buf_request(0, "textDocument/documentSymbol", params, function(err, result, ctx, _)
         if err then
             vim.notify("Error retrieving document symbols: " .. err.message, vim.log.levels.ERROR)
             return
@@ -28,9 +29,9 @@ function M.ToggleFoldImportsWithLSP()
         end
 
         for _, range in ipairs(import_ranges) do
-            if range and range.start and range['end'] then
+            if range and range.start and range["end"] then
                 local start_line = range.start.line + 1
-                local end_line = range['end'].line + 1
+                local end_line = range["end"].line + 1
                 if vim.fn.foldclosed(start_line) == -1 then
                     vim.cmd("normal! " .. start_line .. "Gv" .. end_line .. "Gzf")
                 else
