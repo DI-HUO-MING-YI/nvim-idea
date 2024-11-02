@@ -10,11 +10,21 @@ function M.ToggleFoldImportsWithLSP()
             return
         end
 
+        if not result or #result == 0 then
+            vim.notify("No document symbols found", vim.log.levels.INFO)
+            return
+        end
+
         local import_ranges = {}
         for _, symbol in ipairs(result) do
             if symbol.kind == 6 and symbol.name:match("^import") then
                 table.insert(import_ranges, symbol.range)
             end
+        end
+
+        if #import_ranges == 0 then
+            vim.notify("No import statements found", vim.log.levels.INFO)
+            return
         end
 
         for _, range in ipairs(import_ranges) do
@@ -30,6 +40,7 @@ function M.ToggleFoldImportsWithLSP()
         end
 
         vim.api.nvim_win_set_cursor(0, current_pos)
+        vim.notify("Toggled import folds", vim.log.levels.INFO)
     end)
 end
 
