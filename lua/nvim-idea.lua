@@ -1,7 +1,6 @@
 local M = {}
 
 function M.ToggleFoldImportsWithLSP()
-    vim.notify("Toggled import folds")
     local current_pos = vim.api.nvim_win_get_cursor(0)
     local params = { textDocument = vim.lsp.util.make_text_document_params() }
 
@@ -11,6 +10,7 @@ function M.ToggleFoldImportsWithLSP()
             return
         end
 
+        vim.notify(result, vim.log.levels.INFO)
         if not result or #result == 0 then
             vim.notify("No document symbols found", vim.log.levels.INFO)
             return
@@ -23,6 +23,7 @@ function M.ToggleFoldImportsWithLSP()
             end
         end
 
+        -- Debug: 打印导入范围
         if #import_ranges == 0 then
             vim.notify("No import statements found", vim.log.levels.INFO)
             return
