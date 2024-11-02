@@ -1,11 +1,13 @@
 local M = {}
 
 function M.ToggleFoldImportsWithLSP()
+    vim.notify("000")
     local current_pos = vim.api.nvim_win_get_cursor(0)
     local params = { textDocument = vim.lsp.util.make_text_document_params() }
 
     vim.lsp.buf_request(0, "textDocument/documentSymbol", params, function(err, result, ctx, _)
-        vim.notify(vim.inspect(result))  -- 在此打印结果以进行调试
+        vim.notify("111")
+        vim.notify(vim.inspect(result)) -- 在此打印结果以进行调试
         if err then
             vim.notify("Error retrieving document symbols: " .. err.message, vim.log.levels.ERROR)
             return
